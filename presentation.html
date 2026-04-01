@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Презентация — Навигация МПК</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
+  --accent:#e85d26;--accent2:#ff8c5a;
+  --blue:#1e6fff;--green:#22c55e;
+  --text:#e8eaf0;--muted:#6b7a8d;
+  --border:rgba(255,255,255,0.07);
+  --card:rgba(255,255,255,0.04);
+}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text)}
+
+/* Grid overlay */
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+
+/* Slides container */
+.deck{width:100%;height:100%;position:relative;overflow:hidden}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 80px;
+  opacity:0;transform:translateX(60px);
+  transition:opacity .45s ease,transform .45s ease;
+  pointer-events:none;z-index:1;
+  text-align:center;
+}
+.slide.active{opacity:1;transform:none;pointer-events:all}
+.slide.exit{opacity:0;transform:translateX(-60px)}
+
+/* Glow */
+.glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:300px;background:radial-gradient(ellipse,rgba(232,93,38,0.08) 0%,transparent 65%);pointer-events:none}
+
+/* Typography */
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.title{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,68px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:20px}
+.title em{font-style:normal;color:var(--accent)}
+.sub{font-size:clamp(15px,1.8vw,20px);color:var(--muted);max-width:640px;line-height:1.7;font-weight:500}
+
+/* Pill */
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(232,93,38,0.1);border:1px solid rgba(232,93,38,0.25);border-radius:100px;padding:8px 20px;font-size:13px;color:var(--accent2);font-weight:600;margin-bottom:24px}
+.pill::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Cards grid */
+.cards{display:grid;gap:16px;width:100%;max-width:900px;margin-top:32px}
+.cards.col3{grid-template-columns:repeat(3,1fr)}
+.cards.col2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px 24px;text-align:left}
+.card-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:8px}
+.card-num.green{color:var(--green)}
+.card-num.blue{color:var(--blue)}
+.card-label{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* Steps */
+.steps{display:flex;gap:24px;margin-top:32px;max-width:860px;width:100%}
+.step{flex:1;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px 24px;text-align:center}
+.step-icon{font-size:40px;margin-bottom:16px;display:block}
+.step-n{width:44px;height:44px;border-radius:50%;background:rgba(232,93,38,0.12);border:2px solid rgba(232,93,38,0.3);color:var(--accent);font-family:'Syne',sans-serif;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.step-t{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.step-d{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* Bar chart */
+.bars{width:100%;max-width:600px;margin-top:32px;display:flex;flex-direction:column;gap:14px}
+.bar-row{display:flex;flex-direction:column;gap:6px;text-align:left}
+.bar-label{display:flex;justify-content:space-between;font-size:14px}
+.bar-label span:last-child{font-weight:700;color:var(--accent)}
+.bar-label span:last-child.muted{color:var(--muted)}
+.bar-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:var(--accent);transition:width 1s ease}
+.bar-fill.muted{background:var(--muted)}
+
+/* Tech stack */
+.stack{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:32px}
+.tag{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:12px;padding:12px 22px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.tag.orange{background:rgba(232,93,38,0.1);border-color:rgba(232,93,38,0.3);color:var(--accent2)}
+.tag.blue{background:rgba(30,111,255,0.08);border-color:rgba(30,111,255,0.25);color:#6fa3ff}
+.tag.green{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:#4ade80}
+
+/* Modes */
+.modes{display:flex;gap:16px;margin-top:32px;max-width:700px;width:100%}
+.mode{flex:1;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
+.mode-icon{font-size:28px;margin-bottom:10px}
+.mode-t{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:6px}
+.mode-d{font-size:12px;color:var(--muted)}
+.mode.accent{border-color:rgba(232,93,38,0.4);background:rgba(232,93,38,0.06)}
+
+/* QR slide */
+.qr-box{width:180px;height:180px;background:white;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:32px auto 16px;border:4px solid rgba(232,93,38,0.4)}
+.qr-placeholder{text-align:center}
+.qr-placeholder svg{display:block;margin:0 auto}
+.qr-hint{font-size:14px;color:var(--muted);margin-top:8px}
+
+/* Nav */
+.nav{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;z-index:100;background:rgba(8,12,16,0.9);border:1px solid var(--border);border-radius:100px;padding:10px 20px;backdrop-filter:blur(20px)}
+.nav button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Nunito',sans-serif}
+.nav button:hover{background:rgba(255,255,255,0.08);color:var(--text)}
+.nav button:disabled{opacity:.3;cursor:default}
+.slide-counter{font-size:13px;color:var(--muted);font-weight:600;min-width:50px;text-align:center}
+
+/* Dots */
+.dots{display:flex;gap:6px;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);transition:all .25s;cursor:pointer}
+.dot.active{background:var(--accent);width:20px;border-radius:3px}
+
+/* Slide number badge */
+.slide-badge{position:fixed;top:24px;right:32px;font-size:13px;color:var(--muted);font-weight:600;z-index:100}
+
+/* Big stat */
+.big-stat{font-family:'Syne',sans-serif;font-size:clamp(60px,10vw,120px);font-weight:800;color:var(--accent);line-height:1;margin:16px 0 8px}
+.big-stat.green{color:var(--green)}
+
+/* Graph visual */
+.graph-vis{position:relative;width:360px;height:200px;margin:24px auto}
+.graph-vis svg{width:100%;height:100%}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- SLIDE 1: Титульный -->
+<div class="slide active" id="s1">
+  <div class="glow"></div>
+  <div class="pill">Защита проектов · МПК · 2026</div>
+  <h1 class="title">Автоматизация <em>навигации</em><br>и оповещения</h1>
+  <p class="sub">в образовательной организации</p>
+  <div style="margin-top:40px;display:flex;flex-direction:column;gap:6px;align-items:center">
+    <div style="font-size:15px;color:var(--muted)">Подготовил: <span style="color:var(--text);font-weight:700">Попов А.А., группа ИСП-45</span></div>
+    <div style="font-size:15px;color:var(--muted)">Руководитель: <span style="color:var(--text);font-weight:700">Шиян М.М., преподаватель</span></div>
+    <div style="font-size:15px;color:var(--muted)">БУ «Мегионский политехнический колледж» · 2026</div>
+  </div>
+</div>
+
+<!-- SLIDE 2: Проблема -->
+<div class="slide" id="s2">
+  <div class="glow"></div>
+  <div class="eyebrow">Актуальность</div>
+  <h1 class="title">Ты пришёл в колледж<br>первый раз — <em>куда идти?</em></h1>
+  <p class="sub">Большое здание, два корпуса с похожими коридорами,<br>непонятные таблички — и пара через 5 минут.</p>
+  <div class="cards col3" style="margin-top:40px">
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🏢</div>
+      <div class="step-t">2 корпуса</div>
+      <div class="card-label">Основное здание<br>и мастерские</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">🔄</div>
+      <div class="step-t">3 этажа</div>
+      <div class="card-label">Похожие коридоры<br>на каждом</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">❓</div>
+      <div class="step-t">Нет карты</div>
+      <div class="card-label">Схемы устаревшие,<br>GPS не работает</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: Данные опроса -->
+<div class="slide" id="s3">
+  <div class="glow"></div>
+  <div class="eyebrow">Опрос студентов МПК · март 2026 · 39 участников</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Проблема существует.<br><em>Вот доказательства</em></h1>
+  <div class="cards col3" style="margin-top:32px;max-width:800px">
+    <div class="card" style="text-align:center">
+      <div class="card-num">82%</div>
+      <div class="card-label">опаздывали на пару<br>из-за поиска кабинета</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card-num">49%</div>
+      <div class="card-label">привыкали к зданию<br>больше месяца</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div class="card-num">85%</div>
+      <div class="card-label">осваивались методом<br>«ходить и запоминать»</div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:24px">Единственный способ освоиться — просто ходить.<br>Никаких удобных инструментов не было.</p>
+</div>
+
+<!-- SLIDE 4: Готовых решений нет -->
+<div class="slide" id="s4">
+  <div class="glow"></div>
+  <div class="eyebrow">Анализ существующих решений</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Готовых решений<br><em>нет</em></h1>
+  <div class="cards col3" style="margin-top:32px;max-width:800px">
+    <div class="card">
+      <div style="font-size:28px;margin-bottom:12px">📡</div>
+      <div class="step-t" style="margin-bottom:8px">GPS-навигация</div>
+      <div class="card-label">Не работает внутри зданий — сигнал не проходит через стены</div>
+      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ Не подходит</div>
+    </div>
+    <div class="card">
+      <div style="font-size:28px;margin-bottom:12px">📶</div>
+      <div class="step-t" style="margin-bottom:8px">Bluetooth-маяки</div>
+      <div class="card-label">Точно, но требует дорогостоящего оборудования и монтажа</div>
+      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ Слишком дорого</div>
+    </div>
+    <div class="card">
+      <div style="font-size:28px;margin-bottom:12px">🗺️</div>
+      <div class="step-t" style="margin-bottom:8px">Google Maps Indoor</div>
+      <div class="card-label">Охватывает торговые центры и аэропорты, но не наш колледж</div>
+      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ МПК не добавлен</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: Решение -->
+<div class="slide" id="s5">
+  <div class="glow"></div>
+  <div class="eyebrow">Решение</div>
+  <h1 class="title">Сайт-навигатор<br><em>для МПК</em></h1>
+  <p class="sub">Открываешь на телефоне, выбираешь кабинет —<br>получаешь маршрут на карте здания.<br>Без установки. Без регистрации.</p>
+  <div class="steps" style="margin-top:40px">
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-icon">🔍</div>
+      <div class="step-t">Открыл сайт</div>
+      <div class="step-d">Просто ссылка в браузере — работает на телефоне, планшете, компьютере</div>
+    </div>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-icon">📍</div>
+      <div class="step-t">Выбрал кабинет</div>
+      <div class="step-d">Введи номер или название — система найдёт сразу</div>
+    </div>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-icon">🚶</div>
+      <div class="step-t">Иди по маршруту</div>
+      <div class="step-d">Карта, стрелки, подсказки — поверни, поднимись, войди в здание</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Алгоритм -->
+<div class="slide" id="s6">
+  <div class="glow"></div>
+  <div class="eyebrow">Как работает маршрутизация</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Здание — это <em>граф</em></h1>
+  <div style="display:flex;gap:40px;align-items:center;margin-top:32px;max-width:860px;width:100%">
+    <div class="graph-vis" style="flex-shrink:0">
+      <svg viewBox="0 0 360 200" fill="none">
+        <rect x="20" y="20" width="70" height="40" rx="8" fill="rgba(232,93,38,0.12)" stroke="rgba(232,93,38,0.4)" stroke-width="1.5"/>
+        <text x="55" y="44" font-family="Nunito" font-size="11" fill="#ff8c5a" text-anchor="middle" font-weight="700">Каб. 101</text>
+        <rect x="145" y="20" width="70" height="40" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+        <text x="180" y="44" font-family="Nunito" font-size="11" fill="rgba(255,255,255,0.5)" text-anchor="middle">Коридор</text>
+        <rect x="270" y="20" width="70" height="40" rx="8" fill="rgba(30,111,255,0.1)" stroke="rgba(30,111,255,0.35)" stroke-width="1.5"/>
+        <text x="305" y="44" font-family="Nunito" font-size="11" fill="#6fa3ff" text-anchor="middle" font-weight="700">Каб. 220</text>
+        <rect x="145" y="140" width="70" height="40" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+        <text x="180" y="164" font-family="Nunito" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle">Лестница</text>
+        <line x1="90" y1="40" x2="145" y2="40" stroke="rgba(232,93,38,0.6)" stroke-width="2" stroke-dasharray="5,3"/>
+        <text x="117" y="34" font-family="Nunito" font-size="9" fill="rgba(232,93,38,0.6)" text-anchor="middle">12м</text>
+        <line x1="215" y1="40" x2="270" y2="40" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+        <text x="243" y="34" font-family="Nunito" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">8м</text>
+        <line x1="180" y1="60" x2="180" y2="140" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+        <text x="193" y="105" font-family="Nunito" font-size="9" fill="rgba(255,255,255,0.25)">вверх</text>
+        <circle cx="55" cy="40" r="6" fill="var(--accent)"/>
+        <circle cx="305" cy="40" r="6" fill="var(--blue)"/>
+      </svg>
+    </div>
+    <div style="text-align:left;flex:1">
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px">Алгоритм Дейкстры</div>
+        <div style="font-size:13px;color:var(--muted);line-height:1.6">Находит кратчайший путь в взвешенном графе. Узлы — помещения и коридоры, рёбра — проходы с весами в метрах.</div>
+      </div>
+      <div class="modes">
+        <div class="mode accent">
+          <div class="mode-icon">⚡</div>
+          <div class="mode-t">Кратчайший</div>
+          <div class="mode-d">Минимум метров</div>
+        </div>
+        <div class="mode">
+          <div class="mode-icon">🚫</div>
+          <div class="mode-t">Без лестниц</div>
+          <div class="mode-d">Только лифты</div>
+        </div>
+        <div class="mode">
+          <div class="mode-icon">♿</div>
+          <div class="mode-t">Доступный</div>
+          <div class="mode-d">Пандусы и лифты</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Возможности -->
+<div class="slide" id="s7">
+  <div class="glow"></div>
+  <div class="eyebrow">Возможности системы</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Что умеет <em>навигатор</em></h1>
+  <div class="cards col2" style="margin-top:32px;max-width:800px">
+    <div class="card" style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:28px;flex-shrink:0">🗺️</div>
+      <div>
+        <div class="step-t" style="margin-bottom:6px">Интерактивная карта</div>
+        <div class="card-label">Все этажи обоих корпусов. Каждый кабинет подписан и кликабелен</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:28px;flex-shrink:0">💬</div>
+      <div>
+        <div class="step-t" style="margin-bottom:6px">Пошаговые подсказки</div>
+        <div class="card-label">Поверните направо · Поднимитесь на 2 этаж · Войдите в здание</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:28px;flex-shrink:0">📱</div>
+      <div>
+        <div class="step-t" style="margin-bottom:6px">Любое устройство</div>
+        <div class="card-label">Смартфон, планшет, компьютер. Сенсорное управление. Маршрут можно распечатать</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;gap:16px;align-items:flex-start">
+      <div style="font-size:28px;flex-shrink:0">🚨</div>
+      <div>
+        <div class="step-t" style="margin-bottom:6px">Режим эвакуации</div>
+        <div class="card-label">Одна кнопка — кратчайший путь к ближайшему открытому выходу</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Результаты опроса -->
+<div class="slide" id="s8">
+  <div class="glow"></div>
+  <div class="eyebrow">Результаты опроса · чего не хватает</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)"><em>67%</em> студентов готовы<br>пользоваться уже сейчас</h1>
+  <div style="display:flex;gap:40px;align-items:center;margin-top:32px;max-width:820px;width:100%">
+    <div class="bars" style="flex:1;margin-top:0">
+      <div class="bar-row">
+        <div class="bar-label"><span>Мобильное приложение / веб-карта</span><span>46%</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:46%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Указатели с номерами кабинетов</span><span class="muted">44%</span></div>
+        <div class="bar-track"><div class="bar-fill muted" style="width:44%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Схемы этажей у входа</span><span class="muted">33%</span></div>
+        <div class="bar-track"><div class="bar-fill muted" style="width:33%"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>Цифровой терминал</span><span class="muted">23%</span></div>
+        <div class="bar-track"><div class="bar-fill muted" style="width:23%"></div></div>
+      </div>
+    </div>
+    <div style="text-align:center;flex-shrink:0">
+      <div class="big-stat green">67%</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.5">сказали<br>«Да» или «Скорее да»</div>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:var(--green);border-radius:50%;display:inline-block"></span>Да, точно — 29%</span>
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:#86efac;border-radius:50%;display:inline-block"></span>Скорее да — 38%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: Технологии -->
+<div class="slide" id="s9">
+  <div class="glow"></div>
+  <div class="eyebrow">Технологии</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Реальный код.<br><em>Работающая система</em></h1>
+  <div style="display:flex;gap:48px;margin-top:32px;max-width:800px;width:100%;text-align:left">
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:16px">Frontend</div>
+      <div class="stack" style="justify-content:flex-start;margin-top:0">
+        <span class="tag orange">React</span>
+        <span class="tag orange">TypeScript</span>
+        <span class="tag orange">Vite</span>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:var(--muted);line-height:1.6">Интерактивная карта, маршруты, панель администратора. PWA — устанавливается на телефон.</div>
+    </div>
+    <div style="width:1px;background:var(--border)"></div>
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:16px">Backend</div>
+      <div class="stack" style="justify-content:flex-start;margin-top:0">
+        <span class="tag blue">Node.js</span>
+        <span class="tag blue">Fastify</span>
+        <span class="tag blue">PostgreSQL</span>
+        <span class="tag blue">Prisma</span>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:var(--muted);line-height:1.6">REST API, JWT-аутентификация, алгоритм Дейкстры, управление картой и пользователями.</div>
+    </div>
+  </div>
+  <div style="margin-top:28px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px 28px;font-size:14px;color:#4ade80">
+    ✓ Система протестирована на реальной планировке МПК и готова к внедрению
+  </div>
+</div>
+
+<!-- SLIDE 10: Итог -->
+<div class="slide" id="s10">
+  <div class="glow"></div>
+  <div class="eyebrow">Итоги работы</div>
+  <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Что <em>сделано</em></h1>
+  <div class="cards col2" style="margin-top:32px;max-width:700px">
+    <div class="card" style="display:flex;align-items:center;gap:16px">
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📊</div>
+      <div style="font-size:14px;line-height:1.5">Опрос 39 студентов, подтверждение актуальности проблемы</div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:16px">
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏗️</div>
+      <div style="font-size:14px;line-height:1.5">Клиент-серверная архитектура на React + Node.js + PostgreSQL</div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:16px">
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🧭</div>
+      <div style="font-size:14px;line-height:1.5">Алгоритм Дейкстры с тремя режимами маршрутизации</div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;gap:16px">
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✅</div>
+      <div style="font-size:14px;line-height:1.5">Тест на реальных данных МПК — система работает корректно</div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Спасибо / QR -->
+<div class="slide" id="s11">
+  <div class="glow"></div>
+  <div class="pill">Попробуй сам</div>
+  <h1 class="title">Спасибо<br>за <em>внимание</em></h1>
+  <p class="sub">Попов Александр Александрович · группа ИСП-45<br>Готов ответить на вопросы</p>
+  <div style="margin-top:36px;display:flex;gap:32px;align-items:center">
+    <div style="text-align:center">
+      <div class="qr-box">
+        <svg viewBox="0 0 120 120" width="140" height="140">
+          <rect x="5" y="5" width="110" height="110" fill="white"/>
+          <rect x="10" y="10" width="40" height="40" rx="4" fill="none" stroke="#111" stroke-width="3"/>
+          <rect x="17" y="17" width="26" height="26" rx="2" fill="#111"/>
+          <rect x="70" y="10" width="40" height="40" rx="4" fill="none" stroke="#111" stroke-width="3"/>
+          <rect x="77" y="17" width="26" height="26" rx="2" fill="#111"/>
+          <rect x="10" y="70" width="40" height="40" rx="4" fill="none" stroke="#111" stroke-width="3"/>
+          <rect x="17" y="77" width="26" height="26" rx="2" fill="#111"/>
+          <rect x="58" y="10" width="6" height="6" fill="#111"/>
+          <rect x="66" y="10" width="6" height="6" fill="#111"/>
+          <rect x="58" y="18" width="6" height="6" fill="#111"/>
+          <rect x="58" y="34" width="6" height="6" fill="#111"/>
+          <rect x="66" y="26" width="6" height="6" fill="#111"/>
+          <rect x="58" y="58" width="6" height="6" fill="#111"/>
+          <rect x="66" y="58" width="6" height="6" fill="#111"/>
+          <rect x="74" y="58" width="6" height="6" fill="#111"/>
+          <rect x="82" y="58" width="6" height="6" fill="#111"/>
+          <rect x="90" y="58" width="6" height="6" fill="#111"/>
+          <rect x="98" y="58" width="6" height="6" fill="#111"/>
+          <rect x="106" y="58" width="6" height="6" fill="#111"/>
+          <rect x="58" y="66" width="6" height="6" fill="#111"/>
+          <rect x="74" y="66" width="6" height="6" fill="#111"/>
+          <rect x="90" y="66" width="6" height="6" fill="#111"/>
+          <rect x="106" y="66" width="6" height="6" fill="#111"/>
+          <rect x="58" y="74" width="6" height="6" fill="#111"/>
+          <rect x="66" y="74" width="6" height="6" fill="#111"/>
+          <rect x="82" y="74" width="6" height="6" fill="#111"/>
+          <rect x="98" y="74" width="6" height="6" fill="#111"/>
+          <rect x="58" y="82" width="6" height="6" fill="#111"/>
+          <rect x="74" y="82" width="6" height="6" fill="#111"/>
+          <rect x="90" y="82" width="6" height="6" fill="#111"/>
+          <rect x="58" y="90" width="6" height="6" fill="#111"/>
+          <rect x="66" y="90" width="6" height="6" fill="#111"/>
+          <rect x="74" y="90" width="6" height="6" fill="#111"/>
+          <rect x="82" y="90" width="6" height="6" fill="#111"/>
+          <rect x="98" y="90" width="6" height="6" fill="#111"/>
+          <rect x="106" y="90" width="6" height="6" fill="#111"/>
+          <rect x="58" y="98" width="6" height="6" fill="#111"/>
+          <rect x="74" y="98" width="6" height="6" fill="#111"/>
+          <rect x="90" y="98" width="6" height="6" fill="#111"/>
+          <rect x="106" y="98" width="6" height="6" fill="#111"/>
+          <!-- Accent center dot -->
+          <rect x="54" y="54" width="12" height="12" rx="3" fill="#e85d26"/>
+        </svg>
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">← Замените своим QR-кодом</div>
+    </div>
+    <div style="text-align:left;max-width:260px">
+      <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px">Сайт-визитка проекта</div>
+      <div style="font-size:14px;color:var(--muted);line-height:1.7">Отсканируй камерой телефона и увидишь демо навигатора, статистику опроса и описание проекта.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prev" onclick="navigate(-1)" disabled>←</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" onclick="navigate(1)">→</button>
+</div>
+
+<div class="slide-badge" id="badge">1 / 11</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let cur = 0;
+
+const dotsEl = document.getElementById('dots');
+const badge = document.getElementById('badge');
+
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  dotsEl.appendChild(d);
+});
+
+function navigate(dir) {
+  const next = cur + dir;
+  if(next < 0 || next >= total) return;
+  goTo(next);
+}
+
+function goTo(idx) {
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  setTimeout(() => slides[cur].classList.remove('exit'), 450);
+  cur = idx;
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===cur));
+  badge.textContent = (cur+1) + ' / ' + total;
+  document.getElementById('prev').disabled = cur === 0;
+  document.getElementById('next').disabled = cur === total-1;
+  // Animate bars on slide 8
+  if(cur === 7) {
+    document.querySelectorAll('.bar-fill').forEach(b => {
+      const w = b.style.width; b.style.width='0'; setTimeout(()=>b.style.width=w, 100);
+    });
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') navigate(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') navigate(-1);
+});
+</script>
+</body>
+</html>
