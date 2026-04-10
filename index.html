@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -9,18 +8,17 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080c10;--bg2:#0d1117;--bg3:#111820;
-  --accent:#e85d26;--accent2:#ff8c5a;
-  --blue:#1e6fff;--green:#22c55e;
-  --text:#e8eaf0;--muted:#6b7a8d;
-  --border:rgba(255,255,255,0.07);
-  --card:rgba(255,255,255,0.04);
-  /* Масштабируемый базовый размер: 1vmin от экрана */
+  --bg:#f7f8fa;--bg2:#eff1f5;--bg3:#e7eaef;
+  --accent:#e85d26;--accent2:#c94d18;
+  --blue:#1e6fff;--green:#16a34a;
+  --text:#111827;--muted:#6b7a8d;
+  --border:rgba(0,0,0,0.09);
+  --card:rgba(0,0,0,0.03);
   --s: min(1.6vw, 1.6vh);
 }
 html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text)}
 
-body::after{content:’’;position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0}
 
 .deck{width:100%;height:100%;position:relative;overflow:hidden}
 
@@ -36,81 +34,81 @@ text-align:center;
 .slide.active{opacity:1;transform:none;pointer-events:all}
 .slide.exit{opacity:0;transform:translateX(-60px)}
 
-.glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(700px,80vw);height:min(300px,30vh);background:radial-gradient(ellipse,rgba(232,93,38,0.08) 0%,transparent 65%);pointer-events:none}
+.glow{position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(700px,80vw);height:min(300px,30vh);background:radial-gradient(ellipse,rgba(232,93,38,0.07) 0%,transparent 65%);pointer-events:none}
 
-/* Typography — масштабируется с экраном */
-.eyebrow{font-size:clamp(10px,1vw,18px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(–accent);margin-bottom:clamp(8px,1.2vh,20px)}
-.title{font-family:‘Syne’,sans-serif;font-size:clamp(28px,4.5vw,90px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:clamp(12px,1.5vh,24px)}
-.title em{font-style:normal;color:var(–accent)}
-.sub{font-size:clamp(13px,1.4vw,26px);color:var(–muted);max-width:min(640px,80vw);line-height:1.7;font-weight:500}
+/* Typography */
+.eyebrow{font-size:clamp(10px,1vw,18px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:clamp(8px,1.2vh,20px)}
+.title{font-family:'Syne',sans-serif;font-size:clamp(28px,4.5vw,90px);font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:clamp(12px,1.5vh,24px)}
+.title em{font-style:normal;color:var(--accent)}
+.sub{font-size:clamp(13px,1.4vw,26px);color:var(--muted);max-width:min(640px,80vw);line-height:1.7;font-weight:500}
 
-.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(232,93,38,0.1);border:1px solid rgba(232,93,38,0.25);border-radius:100px;padding:clamp(6px,0.8vh,12px) clamp(14px,1.5vw,28px);font-size:clamp(11px,0.9vw,16px);color:var(–accent2);font-weight:600;margin-bottom:clamp(16px,2vh,32px)}
-.pill::before{content:’’;width:7px;height:7px;background:var(–accent);border-radius:50%;animation:blink 1.8s infinite}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(232,93,38,0.09);border:1px solid rgba(232,93,38,0.25);border-radius:100px;padding:clamp(6px,0.8vh,12px) clamp(14px,1.5vw,28px);font-size:clamp(11px,0.9vw,16px);color:var(--accent2);font-weight:600;margin-bottom:clamp(16px,2vh,32px)}
+.pill::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:blink 1.8s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* Cards */
 .cards{display:grid;gap:clamp(10px,1.2vw,20px);width:100%;max-width:min(900px,90vw);margin-top:clamp(16px,2.5vh,40px)}
 .cards.col3{grid-template-columns:repeat(3,1fr)}
 .cards.col2{grid-template-columns:repeat(2,1fr)}
-.card{background:var(–card);border:1px solid var(–border);border-radius:clamp(12px,1.5vw,24px);padding:clamp(16px,2vw,32px) clamp(14px,1.8vw,28px);text-align:left}
-.card-num{font-family:‘Syne’,sans-serif;font-size:clamp(36px,4.5vw,80px);font-weight:800;color:var(–accent);line-height:1;margin-bottom:clamp(4px,0.8vh,12px)}
-.card-num.green{color:var(–green)}
-.card-num.blue{color:var(–blue)}
-.card-label{font-size:clamp(11px,1vw,18px);color:var(–muted);line-height:1.5}
+.card{background:#fff;border:1px solid var(--border);border-radius:clamp(12px,1.5vw,24px);padding:clamp(16px,2vw,32px) clamp(14px,1.8vw,28px);text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
+.card-num{font-family:'Syne',sans-serif;font-size:clamp(36px,4.5vw,80px);font-weight:800;color:var(--accent);line-height:1;margin-bottom:clamp(4px,0.8vh,12px)}
+.card-num.green{color:var(--green)}
+.card-num.blue{color:var(--blue)}
+.card-label{font-size:clamp(11px,1vw,18px);color:var(--muted);line-height:1.5}
 
 /* Steps */
 .steps{display:flex;gap:clamp(12px,1.5vw,28px);margin-top:clamp(16px,2.5vh,40px);max-width:min(900px,92vw);width:100%}
-.step{flex:1;background:var(–card);border:1px solid var(–border);border-radius:clamp(12px,1.5vw,24px);padding:clamp(16px,2.5vh,36px) clamp(14px,1.8vw,28px);text-align:center}
+.step{flex:1;background:#fff;border:1px solid var(--border);border-radius:clamp(12px,1.5vw,24px);padding:clamp(16px,2.5vh,36px) clamp(14px,1.8vw,28px);text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.05)}
 .step-icon{font-size:clamp(28px,3.5vw,56px);margin-bottom:clamp(8px,1.2vh,20px);display:block}
-.step-n{width:clamp(36px,3.5vw,56px);height:clamp(36px,3.5vw,56px);border-radius:50%;background:rgba(232,93,38,0.12);border:2px solid rgba(232,93,38,0.3);color:var(–accent);font-family:‘Syne’,sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,24px);display:flex;align-items:center;justify-content:center;margin:0 auto clamp(8px,1.2vh,20px)}
-.step-t{font-family:‘Syne’,sans-serif;font-size:clamp(13px,1.2vw,22px);font-weight:700;margin-bottom:clamp(4px,0.6vh,10px)}
-.step-d{font-size:clamp(11px,0.9vw,16px);color:var(–muted);line-height:1.6}
+.step-n{width:clamp(36px,3.5vw,56px);height:clamp(36px,3.5vw,56px);border-radius:50%;background:rgba(232,93,38,0.1);border:2px solid rgba(232,93,38,0.3);color:var(--accent);font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,24px);display:flex;align-items:center;justify-content:center;margin:0 auto clamp(8px,1.2vh,20px)}
+.step-t{font-family:'Syne',sans-serif;font-size:clamp(13px,1.2vw,22px);font-weight:700;margin-bottom:clamp(4px,0.6vh,10px)}
+.step-d{font-size:clamp(11px,0.9vw,16px);color:var(--muted);line-height:1.6}
 
 /* Bars */
 .bars{width:100%;max-width:min(600px,80vw);margin-top:clamp(16px,2.5vh,36px);display:flex;flex-direction:column;gap:clamp(8px,1.2vh,18px)}
 .bar-row{display:flex;flex-direction:column;gap:clamp(4px,0.6vh,8px);text-align:left}
 .bar-label{display:flex;justify-content:space-between;font-size:clamp(12px,1.1vw,20px)}
-.bar-label span:last-child{font-weight:700;color:var(–accent)}
-.bar-label span:last-child.muted{color:var(–muted)}
-.bar-track{height:clamp(6px,0.7vh,12px);background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
-.bar-fill{height:100%;border-radius:4px;background:var(–accent);transition:width 1s ease}
-.bar-fill.muted{background:var(–muted)}
+.bar-label span:last-child{font-weight:700;color:var(--accent)}
+.bar-label span:last-child.muted{color:var(--muted)}
+.bar-track{height:clamp(6px,0.7vh,12px);background:rgba(0,0,0,0.07);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:var(--accent);transition:width 1s ease}
+.bar-fill.muted{background:var(--muted)}
 
 /* Stack */
 .stack{display:flex;gap:clamp(8px,1vw,20px);flex-wrap:wrap;justify-content:center;margin-top:clamp(16px,2vh,32px)}
-.tag{background:rgba(255,255,255,0.06);border:1px solid var(–border);border-radius:12px;padding:clamp(8px,0.9vh,16px) clamp(14px,1.4vw,28px);font-family:‘Syne’,sans-serif;font-size:clamp(12px,1.1vw,20px);font-weight:700}
-.tag.orange{background:rgba(232,93,38,0.1);border-color:rgba(232,93,38,0.3);color:var(–accent2)}
-.tag.blue{background:rgba(30,111,255,0.08);border-color:rgba(30,111,255,0.25);color:#6fa3ff}
-.tag.green{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);color:#4ade80}
+.tag{background:rgba(0,0,0,0.05);border:1px solid var(--border);border-radius:12px;padding:clamp(8px,0.9vh,16px) clamp(14px,1.4vw,28px);font-family:'Syne',sans-serif;font-size:clamp(12px,1.1vw,20px);font-weight:700}
+.tag.orange{background:rgba(232,93,38,0.09);border-color:rgba(232,93,38,0.25);color:var(--accent2)}
+.tag.blue{background:rgba(30,111,255,0.07);border-color:rgba(30,111,255,0.2);color:#1e6fff}
+.tag.green{background:rgba(22,163,74,0.07);border-color:rgba(22,163,74,0.22);color:#16a34a}
 
 /* Modes */
 .modes{display:flex;gap:clamp(10px,1.2vw,20px);margin-top:clamp(16px,2vh,32px);max-width:min(700px,88vw);width:100%}
-.mode{flex:1;background:var(–card);border:1px solid var(–border);border-radius:clamp(10px,1.2vw,20px);padding:clamp(12px,1.8vh,24px);text-align:center}
+.mode{flex:1;background:#fff;border:1px solid var(--border);border-radius:clamp(10px,1.2vw,20px);padding:clamp(12px,1.8vh,24px);text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
 .mode-icon{font-size:clamp(20px,2.5vw,40px);margin-bottom:clamp(6px,0.8vh,14px)}
-.mode-t{font-family:‘Syne’,sans-serif;font-size:clamp(12px,1.1vw,20px);font-weight:700;margin-bottom:clamp(4px,0.5vh,8px)}
-.mode-d{font-size:clamp(10px,0.85vw,15px);color:var(–muted)}
-.mode.accent{border-color:rgba(232,93,38,0.4);background:rgba(232,93,38,0.06)}
+.mode-t{font-family:'Syne',sans-serif;font-size:clamp(12px,1.1vw,20px);font-weight:700;margin-bottom:clamp(4px,0.5vh,8px)}
+.mode-d{font-size:clamp(10px,0.85vw,15px);color:var(--muted)}
+.mode.accent{border-color:rgba(232,93,38,0.35);background:rgba(232,93,38,0.05)}
 
 /* QR */
-.qr-box{width:clamp(160px,20vmin,400px);height:clamp(160px,20vmin,400px);background:white;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:clamp(16px,2.5vh,36px) auto clamp(8px,1vh,16px);border:clamp(3px,0.4vw,8px) solid rgba(232,93,38,0.4)}
+.qr-box{width:clamp(160px,20vmin,400px);height:clamp(160px,20vmin,400px);background:white;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:clamp(16px,2.5vh,36px) auto clamp(8px,1vh,16px);border:clamp(3px,0.4vw,8px) solid rgba(232,93,38,0.35);box-shadow:0 4px 20px rgba(0,0,0,0.08)}
 
 /* Nav */
-.nav{position:fixed;bottom:clamp(16px,2.5vh,40px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:clamp(8px,1vw,20px);z-index:100;background:rgba(8,12,16,0.9);border:1px solid var(–border);border-radius:100px;padding:clamp(8px,1vh,14px) clamp(16px,1.8vw,28px);backdrop-filter:blur(20px)}
-.nav button{background:none;border:none;color:var(–muted);cursor:pointer;font-size:clamp(16px,1.5vw,26px);width:clamp(32px,3vw,48px);height:clamp(32px,3vw,48px);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:‘Nunito’,sans-serif}
-.nav button:hover{background:rgba(255,255,255,0.08);color:var(–text)}
+.nav{position:fixed;bottom:clamp(16px,2.5vh,40px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:clamp(8px,1vw,20px);z-index:100;background:rgba(247,248,250,0.95);border:1px solid var(--border);border-radius:100px;padding:clamp(8px,1vh,14px) clamp(16px,1.8vw,28px);backdrop-filter:blur(20px);box-shadow:0 4px 24px rgba(0,0,0,0.1)}
+.nav button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:clamp(16px,1.5vw,26px);width:clamp(32px,3vw,48px);height:clamp(32px,3vw,48px);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Nunito',sans-serif}
+.nav button:hover{background:rgba(0,0,0,0.06);color:var(--text)}
 .nav button:disabled{opacity:.3;cursor:default}
 
 /* Dots */
 .dots{display:flex;gap:clamp(4px,0.5vw,8px);align-items:center}
-.dot{width:clamp(5px,0.5vw,8px);height:clamp(5px,0.5vw,8px);border-radius:50%;background:var(–muted);transition:all .25s;cursor:pointer}
-.dot.active{background:var(–accent);width:clamp(16px,1.8vw,28px);border-radius:3px}
+.dot{width:clamp(5px,0.5vw,8px);height:clamp(5px,0.5vw,8px);border-radius:50%;background:var(--muted);transition:all .25s;cursor:pointer;opacity:.5}
+.dot.active{background:var(--accent);width:clamp(16px,1.8vw,28px);border-radius:3px;opacity:1}
 
 /* Badge */
-.slide-badge{position:fixed;top:clamp(16px,2vh,32px);right:clamp(20px,2.5vw,48px);font-size:clamp(11px,1vw,18px);color:var(–muted);font-weight:600;z-index:100}
+.slide-badge{position:fixed;top:clamp(16px,2vh,32px);right:clamp(20px,2.5vw,48px);font-size:clamp(11px,1vw,18px);color:var(--muted);font-weight:600;z-index:100}
 
 /* Big stat */
-.big-stat{font-family:‘Syne’,sans-serif;font-size:clamp(48px,9vw,140px);font-weight:800;color:var(–accent);line-height:1;margin:clamp(8px,1.5vh,20px) 0 clamp(4px,0.8vh,12px)}
-.big-stat.green{color:var(–green)}
+.big-stat{font-family:'Syne',sans-serif;font-size:clamp(48px,9vw,140px);font-weight:800;color:var(--accent);line-height:1;margin:clamp(8px,1.5vh,20px) 0 clamp(4px,0.8vh,12px)}
+.big-stat.green{color:var(--green)}
 
 /* Graph visual */
 .graph-vis{position:relative;width:clamp(240px,28vw,480px);height:clamp(140px,16vh,280px);margin:clamp(12px,2vh,28px) auto}
@@ -139,7 +137,6 @@ text-align:center;
 <div class="deck" id="deck">
 
 <!-- SLIDE 1: Титульный -->
-
 <div class="slide active" id="s1">
   <div class="glow"></div>
   <div class="pill">МПК · 2026</div>
@@ -153,7 +150,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 2: Проблема -->
-
 <div class="slide" id="s2">
   <div class="glow"></div>
   <div class="eyebrow">Актуальность</div>
@@ -179,7 +175,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 3: Данные опроса -->
-
 <div class="slide" id="s3">
   <div class="glow"></div>
   <div class="eyebrow">Опрос студентов МПК · март 2026</div>
@@ -202,7 +197,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 4: Готовых решений нет -->
-
 <div class="slide" id="s4">
   <div class="glow"></div>
   <div class="eyebrow">Анализ существующих решений</div>
@@ -212,30 +206,29 @@ text-align:center;
       <div style="font-size:28px;margin-bottom:12px">📡</div>
       <div class="step-t" style="margin-bottom:8px">GPS-навигация</div>
       <div class="card-label">Не работает внутри зданий — сигнал не проходит через стены</div>
-      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ Не подходит</div>
+      <div style="margin-top:12px;font-size:12px;color:#dc2626;font-weight:700">✕ Не подходит</div>
     </div>
     <div class="card">
       <div style="font-size:28px;margin-bottom:12px">📶</div>
       <div class="step-t" style="margin-bottom:8px">Bluetooth-маяки</div>
       <div class="card-label">Точно, но требует дорогостоящего оборудования и монтажа</div>
-      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ Слишком дорого</div>
+      <div style="margin-top:12px;font-size:12px;color:#dc2626;font-weight:700">✕ Слишком дорого</div>
     </div>
     <div class="card">
       <div style="font-size:28px;margin-bottom:12px">🗺️</div>
       <div class="step-t" style="margin-bottom:8px">Google Maps Indoor</div>
       <div class="card-label">Охватывает торговые центры и аэропорты, но не наш колледж</div>
-      <div style="margin-top:12px;font-size:12px;color:#ef4444;font-weight:700">✕ МПК не добавлен</div>
+      <div style="margin-top:12px;font-size:12px;color:#dc2626;font-weight:700">✕ МПК не добавлен</div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 5: Решение -->
-
 <div class="slide" id="s5">
   <div class="glow"></div>
   <div class="eyebrow">Решение</div>
   <h1 class="title">Навигатор<br><em></em></h1>
-  <p class="sub">Открываешь на телефоне, выбираешь кабинет —<br>получаешь маршрут на карте здания.<br></p>
+  <p class="sub">Открываешь на телефоне, выбираешь кабинет —<br>получаешь маршрут на карте здания.</p>
   <div class="steps" style="margin-top:40px">
     <div class="step">
       <div class="step-n">1</div>
@@ -259,7 +252,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 6: Алгоритм -->
-
 <div class="slide" id="s6">
   <div class="glow"></div>
   <div class="eyebrow">Как работает маршрутизация</div>
@@ -268,19 +260,19 @@ text-align:center;
     <div class="graph-vis" style="flex-shrink:0">
       <svg viewBox="0 0 360 200" fill="none">
         <rect x="20" y="20" width="70" height="40" rx="8" fill="rgba(232,93,38,0.12)" stroke="rgba(232,93,38,0.4)" stroke-width="1.5"/>
-        <text x="55" y="44" font-family="Nunito" font-size="11" fill="#ff8c5a" text-anchor="middle" font-weight="700">Каб. 101</text>
-        <rect x="145" y="20" width="70" height="40" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
-        <text x="180" y="44" font-family="Nunito" font-size="11" fill="rgba(255,255,255,0.5)" text-anchor="middle">Коридор</text>
+        <text x="55" y="44" font-family="Nunito" font-size="11" fill="#c94d18" text-anchor="middle" font-weight="700">Каб. 101</text>
+        <rect x="145" y="20" width="70" height="40" rx="8" fill="rgba(0,0,0,0.04)" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
+        <text x="180" y="44" font-family="Nunito" font-size="11" fill="rgba(0,0,0,0.5)" text-anchor="middle">Коридор</text>
         <rect x="270" y="20" width="70" height="40" rx="8" fill="rgba(30,111,255,0.1)" stroke="rgba(30,111,255,0.35)" stroke-width="1.5"/>
-        <text x="305" y="44" font-family="Nunito" font-size="11" fill="#6fa3ff" text-anchor="middle" font-weight="700">Каб. 220</text>
-        <rect x="145" y="140" width="70" height="40" rx="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
-        <text x="180" y="164" font-family="Nunito" font-size="11" fill="rgba(255,255,255,0.4)" text-anchor="middle">Лестница</text>
+        <text x="305" y="44" font-family="Nunito" font-size="11" fill="#1e6fff" text-anchor="middle" font-weight="700">Каб. 220</text>
+        <rect x="145" y="140" width="70" height="40" rx="8" fill="rgba(0,0,0,0.04)" stroke="rgba(0,0,0,0.08)" stroke-width="1.5"/>
+        <text x="180" y="164" font-family="Nunito" font-size="11" fill="rgba(0,0,0,0.4)" text-anchor="middle">Лестница</text>
         <line x1="90" y1="40" x2="145" y2="40" stroke="rgba(232,93,38,0.6)" stroke-width="2" stroke-dasharray="5,3"/>
-        <text x="117" y="34" font-family="Nunito" font-size="9" fill="rgba(232,93,38,0.6)" text-anchor="middle">12м</text>
-        <line x1="215" y1="40" x2="270" y2="40" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
-        <text x="243" y="34" font-family="Nunito" font-size="9" fill="rgba(255,255,255,0.3)" text-anchor="middle">8м</text>
-        <line x1="180" y1="60" x2="180" y2="140" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
-        <text x="193" y="105" font-family="Nunito" font-size="9" fill="rgba(255,255,255,0.25)">вверх</text>
+        <text x="117" y="34" font-family="Nunito" font-size="9" fill="rgba(232,93,38,0.7)" text-anchor="middle">12м</text>
+        <line x1="215" y1="40" x2="270" y2="40" stroke="rgba(0,0,0,0.18)" stroke-width="2"/>
+        <text x="243" y="34" font-family="Nunito" font-size="9" fill="rgba(0,0,0,0.35)" text-anchor="middle">8м</text>
+        <line x1="180" y1="60" x2="180" y2="140" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"/>
+        <text x="193" y="105" font-family="Nunito" font-size="9" fill="rgba(0,0,0,0.3)">вверх</text>
         <circle cx="55" cy="40" r="6" fill="var(--accent)"/>
         <circle cx="305" cy="40" r="6" fill="var(--blue)"/>
       </svg>
@@ -307,7 +299,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 7: Возможности -->
-
 <div class="slide" id="s7">
   <div class="glow"></div>
   <div class="eyebrow">Возможности системы</div>
@@ -345,7 +336,6 @@ text-align:center;
 </div>
 
 <!-- SLIDE 8: Результаты опроса -->
-
 <div class="slide" id="s8">
   <div class="glow"></div>
   <div class="eyebrow">Результаты опроса · чего не хватает</div>
@@ -373,15 +363,14 @@ text-align:center;
       <div class="big-stat green">67%</div>
       <div style="font-size:14px;color:var(--muted);line-height:1.5">сказали<br>«Да» или «Скорее да»</div>
       <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px;font-size:13px">
-        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:var(--green);border-radius:50%;display:inline-block"></span>Да, точно — 29%</span>
-        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:#86efac;border-radius:50%;display:inline-block"></span>Скорее да — 38%</span>
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:#16a34a;border-radius:50%;display:inline-block"></span>Да, точно — 29%</span>
+        <span style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;background:#4ade80;border-radius:50%;display:inline-block"></span>Скорее да — 38%</span>
       </div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 9: Технологии -->
-
 <div class="slide" id="s9">
   <div class="glow"></div>
   <div class="eyebrow">Технологии</div>
@@ -408,39 +397,37 @@ text-align:center;
       <div style="margin-top:16px;font-size:13px;color:var(--muted);line-height:1.6">REST API, JWT-аутентификация, алгоритм Дейкстры, управление картой и пользователями.</div>
     </div>
   </div>
-  <div style="margin-top:28px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:14px;padding:14px 28px;font-size:14px;color:#4ade80">
+  <div style="margin-top:28px;background:rgba(22,163,74,0.07);border:1px solid rgba(22,163,74,0.2);border-radius:14px;padding:14px 28px;font-size:14px;color:#16a34a">
     ✓ Система протестирована на реальной планировке МПК — алгоритм работает корректно
   </div>
 </div>
 
 <!-- SLIDE 10: Итог -->
-
 <div class="slide" id="s10">
   <div class="glow"></div>
   <div class="eyebrow">Итоги работы</div>
   <h1 class="title" style="font-size:clamp(28px,4vw,52px)">Что <em>сделано</em></h1>
   <div class="cards col2" style="margin-top:32px;max-width:700px">
     <div class="card" style="display:flex;align-items:center;gap:16px">
-      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📊</div>
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">📊</div>
       <div style="font-size:14px;line-height:1.5">Опрос студентов, подтверждение актуальности проблемы</div>
     </div>
     <div class="card" style="display:flex;align-items:center;gap:16px">
-      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏗️</div>
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏗️</div>
       <div style="font-size:14px;line-height:1.5">Клиент-серверная архитектура на React + Node.js + PostgreSQL</div>
     </div>
     <div class="card" style="display:flex;align-items:center;gap:16px">
-      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🧭</div>
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🧭</div>
       <div style="font-size:14px;line-height:1.5">Алгоритм Дейкстры с тремя режимами маршрутизации</div>
     </div>
     <div class="card" style="display:flex;align-items:center;gap:16px">
-      <div style="width:40px;height:40px;background:rgba(232,93,38,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✅</div>
+      <div style="width:40px;height:40px;background:rgba(232,93,38,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✅</div>
       <div style="font-size:14px;line-height:1.5">Тест на сгенерированных данных — система работает корректно</div>
     </div>
   </div>
 </div>
 
 <!-- SLIDE 11: Спасибо / QR -->
-
 <div class="slide" id="s11">
   <div class="glow"></div>
   <div class="pill">Попробуй сам</div>
@@ -462,7 +449,6 @@ text-align:center;
 </div><!-- /deck -->
 
 <!-- Navigation -->
-
 <div class="nav">
   <button id="prev" onclick="navigate(-1)" disabled>←</button>
   <div class="dots" id="dots"></div>
@@ -513,7 +499,6 @@ function goTo(idx) {
 document.addEventListener('keydown', e => {
   if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown') navigate(1);
   if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp') navigate(-1);
-  // Чёрный экран (кнопка B или точка на пульте)
   if(e.key==='b'||e.key==='B'||e.key==='.') {
     const deck = document.getElementById('deck');
     deck.style.visibility = deck.style.visibility==='hidden' ? 'visible' : 'hidden';
